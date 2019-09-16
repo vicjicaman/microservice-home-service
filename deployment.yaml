@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '${DEPLOYMENT_WEB@microservice-home-config}'
+  namespace: '${NAMESPACE@microservice-config}'
+  labels:
+    app: '${DEPLOYMENT_WEB@microservice-home-config}'
+    moduleid: microservice-home-web-service
+    version: 1.70.5-home-base-cache-data-prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: '${DEPLOYMENT_WEB@microservice-home-config}'
+  template:
+    metadata:
+      labels:
+        app: '${DEPLOYMENT_WEB@microservice-home-config}'
+    spec:
+      containers:
+        -
+          name: app
+          image: 'repoflow/microservice-home-container:1.70.1-home-base-cache-data-prod'
+          env:
+            -
+              name: HOST
+              value: '${HOST@microservice-config}'
+            -
+              name: BASE_ROUTE_APP
+              value: '${BASE_ROUTE_APP@microservice-home-config}'
+            -
+              name: INTERNAL_PORT_APP
+              value: '${INTERNAL_PORT_APP@microservice-home-config}'
+            -
+              name: EXTERNAL_URL_GRAPH
+              value: '${EXTERNAL_URL_GRAPH@microservice-home-config}'
+            -
+              name: EXTERNAL_URL_EVENTS
+              value: '${EXTERNAL_URL_EVENTS@microservice-home-config}'
+            -
+              name: INTERNAL_URL_GRAPH
+              value: '${INTERNAL_URL_GRAPH@microservice-home-config}'
+            -
+              name: INTERNAL_URL_EVENTS
+              value: '${INTERNAL_URL_EVENTS@microservice-home-config}'
+          ports:
+            -
+              containerPort: '${INTERNAL_PORT_APP@microservice-home-config}'
